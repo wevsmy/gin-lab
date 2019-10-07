@@ -22,7 +22,7 @@ func main() {
 	router.Static("/static", "static")
 
 	router.GET("/", func(c *gin.Context) {
-		c.String(http.StatusOK, "hello world")
+		c.String(http.StatusOK, "hello world golang")
 	})
 
 	router.GET("/test", func(c *gin.Context) {
