@@ -11,10 +11,10 @@ paths:
       - application/json
       responses:
         "200":
-          description: hello
+          description: hello world
           schema:
             type: string
-  /hello123/:
+  /ping:
     get:
       consumes:
       - application/json
@@ -23,7 +23,7 @@ paths:
       - application/json
       responses:
         "200":
-          description: hello123
+          description: v1 pong
           schema:
             type: string
 swagger: "2.0"

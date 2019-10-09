@@ -13,11 +13,11 @@ func main() {
 
 	// programatically set swagger info
 	docs.SwaggerInfo.Title = "Swagger Gin-Lab API"
-	docs.SwaggerInfo.Description = "This is a sample server Petstore server."
+	docs.SwaggerInfo.Description = "This is a sample server gin-lab server."
 	docs.SwaggerInfo.Version = "1.0"
 	docs.SwaggerInfo.Host = "localhost:8080"
-	docs.SwaggerInfo.BasePath = "/v2"
-	docs.SwaggerInfo.Schemes = []string{"http", "https"}
+	docs.SwaggerInfo.BasePath = "/v1"
+	docs.SwaggerInfo.Schemes = []string{"http"}
 
 	port := os.Getenv("PORT")
 
@@ -29,5 +29,4 @@ func main() {
 	r := gin.New()
 	routers.Router(r)
 	_ = r.Run(":" + port)
-
 }

@@ -16,7 +16,7 @@
                 ],
                 "responses": {
                     "200": {
-                        "description": "hello",
+                        "description": "hello world",
                         "schema": {
                             "type": "string"
                         }
@@ -24,7 +24,7 @@
                 }
             }
         },
-        "/hello123/": {
+        "/ping": {
             "get": {
                 "description": "get data",
                 "consumes": [
@@ -35,7 +35,7 @@
                 ],
                 "responses": {
                     "200": {
-                        "description": "hello123",
+                        "description": "v1 pong",
                         "schema": {
                             "type": "string"
                         }

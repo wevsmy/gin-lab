@@ -15,11 +15,11 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
-// @列表页面数据
+// @首页
 // @Description get data
 // @Accept  json
 // @Produce json
-// @Success 200 {string} string "hello"
+// @Success 200 {string} string "hello world"
 // @Router /hello/ [get]
 func Index(c *gin.Context) {
 	//返回结果
@@ -28,12 +28,12 @@ func Index(c *gin.Context) {
 	})
 }
 
-// @列表页面数据123
+// @ping
 // @Description get data
 // @Accept  json
 // @Produce json
-// @Success 200 {string} string "hello123"
-// @Router /hello123/ [get]
+// @Success 200 {string} string "v1 pong"
+// @Router /ping [get]
 func Pong(c *gin.Context) {
 	c.JSON(200, gin.H{
 		"message": "v1 pong",
