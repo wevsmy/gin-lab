@@ -14,20 +14,45 @@ package routers
 import (
 	"gin-lab/controllers"
 	"github.com/gin-gonic/gin"
+	swaggerFiles "github.com/swaggo/files"
+	"github.com/swaggo/gin-swagger"
 	"net/http"
 )
 
+// 主路由入口(路由注册)
+func Router(r *gin.Engine) {
+	// api
+	apiRouter(r)
+	// 静态文件
+	staticRouter(r)
+	// 测试
+	testRouter(r)
+}
+
+// 二级API路由入口
 func apiRouter(r *gin.Engine) {
 	// 首页
 	r.GET("/", controllers.Index)
+
 	// 路由组
 	v1 := r.Group("v1")
 	{
 		// 二级路由
 		v1.GET("/ping", controllers.Pong)
+
+		//accounts := v1.Group("/accounts")
+		//{
+		//	accounts.GET(":id", controllers.Pong)
+		//	accounts.GET("", controllers.Pong)
+		//	accounts.POST("", controllers.Pong)
+		//	accounts.DELETE(":id", controllers.Pong)
+		//	accounts.PATCH(":id", controllers.Pong)
+		//	accounts.POST(":id/images", controllers.Pong)
+		//}
 	}
 }
 
+// 静态文件路由入口
 func staticRouter(r *gin.Engine) {
 
 	// 静态资源文件夹
@@ -35,19 +60,21 @@ func staticRouter(r *gin.Engine) {
 
 	// 静态文件图标
 	r.StaticFile("/favicon.ico", "./statics/favicon.ico")
+	//r.StaticFile("/swagger.json", "./swagger.json")
 }
 
-// 主路由入口
-func Router(r *gin.Engine) {
+// 测试路由入口
+func testRouter(r *gin.Engine) {
 
-	// api
-	apiRouter(r)
-	// 静态文件
-	staticRouter(r)
+	//url := ginSwagger.URL("./swagger.json") // The url pointing to API definition
+	//r.GET("/swagger/*any", ginSwagger.WrapHandler(swaggerFiles.Handler, url))
+
+	// use ginSwagger middleware to serve the API docs
+	r.GET("/swagger/*any", ginSwagger.WrapHandler(swaggerFiles.Handler))
 
 	r.GET("/ping", func(c *gin.Context) {
 		c.JSON(200, gin.H{
-			"message": "pong123",
+			"message": "pong",
 		})
 	})
 

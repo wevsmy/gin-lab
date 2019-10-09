@@ -15,20 +15,33 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
+// @列表页面数据
+// @Description get data
+// @Accept  json
+// @Produce json
+// @Success 200 {string} string "hello"
+// @Router /hello/ [get]
 func Index(c *gin.Context) {
+	//返回结果
 	c.JSON(200, gin.H{
 		"message": "hello world",
+	})
+}
+
+// @列表页面数据123
+// @Description get data
+// @Accept  json
+// @Produce json
+// @Success 200 {string} string "hello123"
+// @Router /hello123/ [get]
+func Pong(c *gin.Context) {
+	c.JSON(200, gin.H{
+		"message": "v1 pong",
 	})
 }
 
 func Test(c *gin.Context) {
 	c.JSON(200, gin.H{
 		"message": "test",
-	})
-}
-
-func Pong(c *gin.Context) {
-	c.JSON(200, gin.H{
-		"message": "v1 pong",
 	})
 }

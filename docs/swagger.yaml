@@ -1,0 +1,29 @@
+info:
+  contact: {}
+  license: {}
+paths:
+  /hello/:
+    get:
+      consumes:
+      - application/json
+      description: get data
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: hello
+          schema:
+            type: string
+  /hello123/:
+    get:
+      consumes:
+      - application/json
+      description: get data
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: hello123
+          schema:
+            type: string
+swagger: "2.0"
