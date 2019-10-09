@@ -1,9 +1,9 @@
 /*"""
 @Version: V1.0
-@Author: willson.wu
+@Author: wevsmy
 @License: Apache Licence
-@Contact: willson.wu@goertek.com
-@Site: goertek.com
+@Contact: wevsmy@gmail.com
+@Site: blog.weii.ink
 @Software: GoLand
 @File: server.go
 @Time: 2019/10/08 下午5:43

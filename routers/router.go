@@ -1,9 +1,9 @@
 /*"""
 @Version: V1.0
-@Author: willson.wu
+@Author: wevsmy
 @License: Apache Licence
-@Contact: willson.wu@goertek.com
-@Site: goertek.com
+@Contact: wevsmy@gmail.com
+@Site: blog.weii.ink
 @Software: GoLand
 @File: router.go
 @Time: 2019/10/08 下午6:13
@@ -21,19 +21,18 @@ import (
 
 // 主路由入口(路由注册)
 func Router(r *gin.Engine) {
-	// api
-	apiRouter(r)
+	// 首页
+	r.GET("/", controllers.Index)
 	// 静态文件
 	staticRouter(r)
+	// api
+	v1ApiRouter(r)
 	// 测试
 	testRouter(r)
 }
 
-// 二级API路由入口
-func apiRouter(r *gin.Engine) {
-	// 首页
-	r.GET("/", controllers.Index)
-
+// v1 API路由入口
+func v1ApiRouter(r *gin.Engine) {
 	// 路由组
 	v1 := r.Group("v1")
 	{
@@ -54,21 +53,15 @@ func apiRouter(r *gin.Engine) {
 
 // 静态文件路由入口
 func staticRouter(r *gin.Engine) {
-
 	// 静态资源文件夹
 	r.Static("/statics", "statics")
 
 	// 静态文件图标
 	r.StaticFile("/favicon.ico", "./statics/favicon.ico")
-	//r.StaticFile("/swagger.json", "./swagger.json")
 }
 
 // 测试路由入口
 func testRouter(r *gin.Engine) {
-
-	//url := ginSwagger.URL("./swagger.json") // The url pointing to API definition
-	//r.GET("/swagger/*any", ginSwagger.WrapHandler(swaggerFiles.Handler, url))
-
 	// use ginSwagger middleware to serve the API docs
 	r.GET("/swagger/*any", ginSwagger.WrapHandler(swaggerFiles.Handler))
 
