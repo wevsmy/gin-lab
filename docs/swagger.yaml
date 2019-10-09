@@ -1,0 +1,32 @@
+info:
+  contact:
+    email: wevsmy@gmail.com
+    name: API Support
+    url: https://blog.weii.ink
+  license: {}
+paths:
+  /hello/:
+    get:
+      consumes:
+      - application/json
+      description: get data
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: hello world
+          schema:
+            type: string
+  /ping:
+    get:
+      consumes:
+      - application/json
+      description: get data
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: v1 pong
+          schema:
+            type: string
+swagger: "2.0"

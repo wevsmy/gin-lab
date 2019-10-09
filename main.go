@@ -1,33 +1,26 @@
 package main
 
 import (
-	"log"
-	"net/http"
-	"os"
-
+	"gin-lab/routers"
+	"gin-lab/utils"
 	"github.com/gin-gonic/gin"
 	_ "github.com/heroku/x/hmetrics/onload"
+	"log"
+	"os"
 )
 
+// @contact.name API Support
+// @contact.url https://blog.weii.ink
+// @contact.email wevsmy@gmail.com
 func main() {
 	port := os.Getenv("PORT")
 
 	if port == "" {
-		log.Fatal("$PORT must be set")
+		log.Printf("$PORT must be set default %s", utils.Config.Host)
+		port = utils.Config.Port
 	}
 
-	router := gin.New()
-	router.Use(gin.Logger())
-	router.LoadHTMLGlob("templates/*.tmpl.html")
-	router.Static("/static", "static")
-
-	router.GET("/", func(c *gin.Context) {
-		c.String(http.StatusOK, "hello world golang")
-	})
-
-	router.GET("/test", func(c *gin.Context) {
-		c.HTML(http.StatusOK, "index.tmpl.html", nil)
-	})
-
-	_ = router.Run(":" + port)
+	r := gin.New()
+	routers.Router(r)
+	_ = r.Run(":" + port)
 }
