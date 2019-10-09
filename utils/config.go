@@ -38,6 +38,6 @@ func init() {
 	if Config.Host == "" {
 		Config.Host = "localhost"
 	} else if Config.Port == "" {
-		Config.Port = "8080"
+		Config.Port = "80"
 	}
 }

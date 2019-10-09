@@ -1,8 +1,6 @@
 package main
 
 import (
-	"fmt"
-	"gin-lab/docs"
 	"gin-lab/routers"
 	"gin-lab/utils"
 	"github.com/gin-gonic/gin"
@@ -11,15 +9,10 @@ import (
 	"os"
 )
 
+// @contact.name API Support
+// @contact.url https://blog.weii.ink
+// @contact.email wevsmy@gmail.com
 func main() {
-	// programatically set swagger info
-	docs.SwaggerInfo.Title = "Swagger Gin-Lab API"
-	docs.SwaggerInfo.Description = "This is a sample server gin-lab server."
-	docs.SwaggerInfo.Version = "1.0"
-	docs.SwaggerInfo.Host = fmt.Sprintf("%s:%s", utils.Config.Host, utils.Config.Port)
-	docs.SwaggerInfo.BasePath = "/v1"
-	docs.SwaggerInfo.Schemes = []string{"http"}
-
 	port := os.Getenv("PORT")
 
 	if port == "" {

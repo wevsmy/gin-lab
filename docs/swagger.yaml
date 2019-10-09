@@ -1,5 +1,8 @@
 info:
-  contact: {}
+  contact:
+    email: wevsmy@gmail.com
+    name: API Support
+    url: https://blog.weii.ink
   license: {}
 paths:
   /hello/:
