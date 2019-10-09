@@ -33,21 +33,25 @@ func Router(r *gin.Engine) {
 
 // v1 API路由入口
 func v1ApiRouter(r *gin.Engine) {
+	// use ginSwagger middleware to serve the API docs
+	r.GET("/swagger/*any", ginSwagger.WrapHandler(swaggerFiles.Handler))
 	// 路由组
 	v1 := r.Group("v1")
 	{
 		// 二级路由
 		v1.GET("/ping", controllers.Pong)
 
-		//accounts := v1.Group("/accounts")
-		//{
-		//	accounts.GET(":id", controllers.Pong)
-		//	accounts.GET("", controllers.Pong)
-		//	accounts.POST("", controllers.Pong)
-		//	accounts.DELETE(":id", controllers.Pong)
-		//	accounts.PATCH(":id", controllers.Pong)
-		//	accounts.POST(":id/images", controllers.Pong)
-		//}
+		method := v1.Group("/method")
+		{
+			method.GET(":id", controllers.Get)
+			method.GET("", controllers.Get)
+			method.POST("", controllers.Post)
+			method.PUT("", controllers.Put)
+			method.DELETE("", controllers.Delete)
+			method.PATCH("", controllers.Patch)
+			method.HEAD("", controllers.Head)
+			method.OPTIONS("", controllers.Options)
+		}
 	}
 }
 
@@ -62,9 +66,6 @@ func staticRouter(r *gin.Engine) {
 
 // 测试路由入口
 func testRouter(r *gin.Engine) {
-	// use ginSwagger middleware to serve the API docs
-	r.GET("/swagger/*any", ginSwagger.WrapHandler(swaggerFiles.Handler))
-
 	r.GET("/ping", func(c *gin.Context) {
 		c.JSON(200, gin.H{
 			"message": "pong",

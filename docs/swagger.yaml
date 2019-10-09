@@ -17,6 +17,84 @@ paths:
           description: hello world
           schema:
             type: string
+  /method:
+    delete:
+      consumes:
+      - application/json
+      description: delete data
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: delete 方法
+          schema:
+            type: string
+    get:
+      consumes:
+      - application/json
+      description: get data
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: get 方法
+          schema:
+            type: string
+    head:
+      consumes:
+      - application/json
+      description: head data
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: head 方法
+          schema:
+            type: string
+    options:
+      consumes:
+      - application/json
+      description: options data
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: options 方法
+          schema:
+            type: string
+    patch:
+      consumes:
+      - application/json
+      description: patch data
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: patch 方法
+          schema:
+            type: string
+    post:
+      consumes:
+      - application/json
+      description: post data
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: post 方法
+          schema:
+            type: string
+    put:
+      consumes:
+      - application/json
+      description: put data
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: put 方法
+          schema:
+            type: string
   /ping:
     get:
       consumes:
