@@ -1,4 +1,4 @@
-module "gin-lab"
+module gin-lab
 
 go 1.12
 
