@@ -13,9 +13,11 @@ package routers
 
 import (
 	"gin-lab/controllers"
+	"gin-lab/middleware"
 	"github.com/gin-gonic/gin"
 	swaggerFiles "github.com/swaggo/files"
 	"github.com/swaggo/gin-swagger"
+	"log"
 	"net/http"
 )
 
@@ -66,13 +68,20 @@ func staticRouter(r *gin.Engine) {
 
 // 测试路由入口
 func testRouter(r *gin.Engine) {
+	// 全局日志记录中间件
+	r.Use(gin.Logger())
+
+	// 自定义中间件
+	r.Use(middleware.TestMiddleware())
+
 	r.GET("/ping", func(c *gin.Context) {
-		c.JSON(200, gin.H{
+		v, ex := c.Get("example")
+		log.Println("牛逼：", v, ex)
+		c.JSON(404, gin.H{
 			"message": "pong",
 		})
 	})
 
-	r.Use(gin.Logger())
 	r.LoadHTMLGlob("templates/*.tmpl.html")
 	r.GET("/test", func(c *gin.Context) {
 		c.HTML(http.StatusOK, "index.tmpl.html", nil)
