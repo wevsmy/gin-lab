@@ -124,6 +124,37 @@ func Options(c *gin.Context) {
 	})
 }
 
+func RefreshToken(c *gin.Context) {
+	c.JSON(200, gin.H{
+		"message": "RefreshToken",
+	})
+}
+
+func Login(c *gin.Context) {
+	//token := jwt.New(jwt.SigningMethodHS256)
+	//claims := make(jwt.MapClaims)
+	//claims["exp"] = time.Now().Add(time.Hour * time.Duration(1)).Unix()
+	//claims["iat"] = time.Now().Unix()
+	//token.Claims = claims
+	//
+	//tokenString, err := token.SignedString([]byte("SecretKey"))
+
+	//c.Request.WithContext()
+	//c.Header("Authorization", tokenString)
+	//
+	//fmt.Println(tokenString, err)
+
+	c.JSON(200, gin.H{
+		"token": "tokenString",
+	})
+}
+
+func Logout(c *gin.Context) {
+	c.JSON(200, gin.H{
+		"message": "Logout",
+	})
+}
+
 func Test(c *gin.Context) {
 	c.JSON(200, gin.H{
 		"message": "test",

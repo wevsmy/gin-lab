@@ -23,6 +23,12 @@ import (
 
 // 主路由入口(路由注册)
 func Router(r *gin.Engine) {
+	// 全局中间件
+	r.Use(
+		gin.Logger(),                // 日志记录
+		gin.Recovery(),              // 有panic时, 进行500的错误处理
+		middleware.TestMiddleware(), // 自定义测试中间件
+	)
 	// 首页
 	r.GET("/", controllers.Index)
 	// 静态文件
@@ -68,15 +74,24 @@ func staticRouter(r *gin.Engine) {
 
 // 测试路由入口
 func testRouter(r *gin.Engine) {
-	// 全局日志记录中间件
-	r.Use(gin.Logger())
 
-	// 自定义中间件
-	r.Use(middleware.TestMiddleware())
+	auth := r.Group("/auth")
+	auth.Use(middleware.AuthMiddleware()) // 认证中间件
+	{
+		auth.GET("/refresh_token", controllers.RefreshToken)
+	}
+	admin := r.Group("/admin")
+	{
+		admin.GET("/login", controllers.Login)
+		admin.GET("/logout", controllers.Logout)
+	}
 
 	r.GET("/ping", func(c *gin.Context) {
 		v, ex := c.Get("example")
 		log.Println("牛逼：", v, ex)
+
+		c.SetCookie("user_cookie", string("123456"), 1000, "/", "localhost", false, true)
+
 		c.JSON(404, gin.H{
 			"message": "pong",
 		})
