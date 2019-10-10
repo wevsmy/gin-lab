@@ -14,6 +14,7 @@ package routers
 import (
 	"gin-lab/controllers"
 	"gin-lab/middleware"
+	gin_jwt "github.com/appleboy/gin-jwt/v2"
 	"github.com/gin-gonic/gin"
 	swaggerFiles "github.com/swaggo/files"
 	"github.com/swaggo/gin-swagger"
@@ -75,15 +76,31 @@ func staticRouter(r *gin.Engine) {
 // 测试路由入口
 func testRouter(r *gin.Engine) {
 
+	//auth := r.Group("/auth")
+	//auth.Use(middleware.AuthMiddleware()) // 认证中间件
+	//{
+	//	auth.GET("/refresh_token", controllers.RefreshToken)
+	//}
+	//admin := r.Group("/admin")
+	//{
+	//	admin.GET("/login", controllers.Login)
+	//	admin.GET("/logout", controllers.Logout)
+	//}
+
+	r.POST("/login", middleware.Auth_JWT.LoginHandler)
+
+	r.NoRoute(middleware.Auth_JWT.MiddlewareFunc(), func(c *gin.Context) {
+		claims := gin_jwt.ExtractClaims(c)
+		log.Printf("NoRoute claims: %#v\n", claims)
+		c.JSON(404, gin.H{"code": "PAGE_NOT_FOUND", "message": "Page not found"})
+	})
+
 	auth := r.Group("/auth")
-	auth.Use(middleware.AuthMiddleware()) // 认证中间件
+	// Refresh time can be longer than token timeout
+	auth.GET("/refresh_token", middleware.Auth_JWT.RefreshHandler)
+	auth.Use(middleware.Auth_JWT.MiddlewareFunc())
 	{
-		auth.GET("/refresh_token", controllers.RefreshToken)
-	}
-	admin := r.Group("/admin")
-	{
-		admin.GET("/login", controllers.Login)
-		admin.GET("/logout", controllers.Logout)
+		auth.GET("/hello", middleware.HelloHandler)
 	}
 
 	r.GET("/ping", func(c *gin.Context) {
