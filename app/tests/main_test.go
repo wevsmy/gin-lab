@@ -13,7 +13,7 @@ package tests
 
 import (
 	"fmt"
-	"gin-lab/controllers"
+	"gin-lab/app/controllers"
 	"github.com/gin-gonic/gin"
 	"net/http"
 	"net/http/httptest"

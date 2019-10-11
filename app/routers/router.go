@@ -12,8 +12,8 @@
 package routers
 
 import (
-	"gin-lab/controllers"
-	"gin-lab/middleware"
+	"gin-lab/app/controllers"
+	"gin-lab/app/middleware"
 	gin_jwt "github.com/appleboy/gin-jwt/v2"
 	"github.com/gin-gonic/gin"
 	swaggerFiles "github.com/swaggo/files"
@@ -54,14 +54,15 @@ func v1ApiRouter(r *gin.Engine) {
 
 		method := v1.Group("/method")
 		{
-			method.GET(":id", controllers.Get)
-			method.GET("", controllers.Get)
-			method.POST("", controllers.Post)
-			method.PUT("", controllers.Put)
-			method.DELETE("", controllers.Delete)
-			method.PATCH("", controllers.Patch)
-			method.HEAD("", controllers.Head)
-			method.OPTIONS("", controllers.Options)
+			var m *controllers.MethodTest
+			method.GET(":id", m.GetOne)
+			method.GET("", m.GetList)
+			method.POST("", m.Post)
+			method.PUT("", m.Put)
+			method.DELETE(":id", m.Delete)
+			method.PATCH(":id", m.Patch)
+			method.HEAD("", m.Head)
+			method.OPTIONS("", m.Options)
 		}
 	}
 }
@@ -92,7 +93,7 @@ func staticRouter(r *gin.Engine) {
 	r.Static("/statics", "statics")
 
 	// 静态文件图标
-	r.StaticFile("/favicon.ico", "./statics/favicon.ico")
+	r.StaticFile("/favicon.ico", "./app/statics/favicon.ico")
 }
 
 // 测试路由入口
@@ -108,7 +109,7 @@ func testRouter(r *gin.Engine) {
 		})
 	})
 
-	r.LoadHTMLGlob("templates/*.tmpl.html")
+	r.LoadHTMLGlob("./app/templates/*.tmpl.html")
 	r.GET("/test", func(c *gin.Context) {
 		c.HTML(http.StatusOK, "index.tmpl.html", nil)
 	})

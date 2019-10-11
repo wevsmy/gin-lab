@@ -28,8 +28,7 @@ type config struct {
 
 // 解析配置文件
 func init() {
-
-	filePath := "./conf/config.yaml"
+	filePath := "./configs/config.yaml"
 	err := createFileWithDir(filePath)
 	if err != nil {
 		log.Fatalf("filePath: %s create err: %v", filePath, err)

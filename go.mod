@@ -9,6 +9,7 @@ require (
 	github.com/go-openapi/jsonreference v0.19.3 // indirect
 	github.com/go-openapi/spec v0.19.3 // indirect
 	github.com/heroku/x v0.0.0-20171004170240-705849e307dd
+	github.com/jinzhu/gorm v1.9.11
 	github.com/mailru/easyjson v0.7.0 // indirect
 	github.com/mattn/go-isatty v0.0.9 // indirect
 	github.com/stretchr/testify v1.4.0 // indirect

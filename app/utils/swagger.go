@@ -13,7 +13,7 @@ package utils
 
 import (
 	"fmt"
-	"gin-lab/docs"
+	"gin-lab/app/docs"
 )
 
 func init() {
