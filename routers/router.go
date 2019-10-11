@@ -36,6 +36,8 @@ func Router(r *gin.Engine) {
 	staticRouter(r)
 	// api
 	v1ApiRouter(r)
+	// 认证相关路由
+	authRouter(r)
 	// 测试
 	testRouter(r)
 }
@@ -64,6 +66,26 @@ func v1ApiRouter(r *gin.Engine) {
 	}
 }
 
+// 认证相关路由
+func authRouter(r *gin.Engine) {
+	r.POST("/login", controllers.Login)
+	r.GET("/logout", controllers.Logout)
+
+	r.NoRoute(middleware.Auth_JWT.MiddlewareFunc(), func(c *gin.Context) {
+		claims := gin_jwt.ExtractClaims(c)
+		log.Printf("NoRoute claims: %#v\n", claims)
+		c.JSON(404, gin.H{"code": "404", "message": "Page not found"})
+	})
+
+	auth := r.Group("/auth")
+	// Refresh time can be longer than token timeout
+	auth.GET("/refresh_token", controllers.RefreshToken)
+	auth.Use(middleware.Auth_JWT.MiddlewareFunc())
+	{
+		auth.GET("/hello", controllers.Hello)
+	}
+}
+
 // 静态文件路由入口
 func staticRouter(r *gin.Engine) {
 	// 静态资源文件夹
@@ -75,34 +97,6 @@ func staticRouter(r *gin.Engine) {
 
 // 测试路由入口
 func testRouter(r *gin.Engine) {
-
-	//auth := r.Group("/auth")
-	//auth.Use(middleware.AuthMiddleware()) // 认证中间件
-	//{
-	//	auth.GET("/refresh_token", controllers.RefreshToken)
-	//}
-	//admin := r.Group("/admin")
-	//{
-	//	admin.GET("/login", controllers.Login)
-	//	admin.GET("/logout", controllers.Logout)
-	//}
-
-	r.POST("/login", middleware.Auth_JWT.LoginHandler)
-
-	r.NoRoute(middleware.Auth_JWT.MiddlewareFunc(), func(c *gin.Context) {
-		claims := gin_jwt.ExtractClaims(c)
-		log.Printf("NoRoute claims: %#v\n", claims)
-		c.JSON(404, gin.H{"code": "PAGE_NOT_FOUND", "message": "Page not found"})
-	})
-
-	auth := r.Group("/auth")
-	// Refresh time can be longer than token timeout
-	auth.GET("/refresh_token", middleware.Auth_JWT.RefreshHandler)
-	auth.Use(middleware.Auth_JWT.MiddlewareFunc())
-	{
-		auth.GET("/hello", middleware.HelloHandler)
-	}
-
 	r.GET("/ping", func(c *gin.Context) {
 		v, ex := c.Get("example")
 		log.Println("牛逼：", v, ex)
@@ -118,17 +112,4 @@ func testRouter(r *gin.Engine) {
 	r.GET("/test", func(c *gin.Context) {
 		c.HTML(http.StatusOK, "index.tmpl.html", nil)
 	})
-
-	//r.GET("/cookie", func(c *gin.Context) {
-	//
-	//	cookie, err := c.Cookie("gin_cookie")
-	//
-	//	if err != nil {
-	//		cookie = "NotSet"
-	//		c.SetCookie("gin_cookie", "test", 3600, "/", "localhost", false, true)
-	//		fmt.Println("asdasdasd")
-	//	}
-	//
-	//	fmt.Printf("Cookie value: %s \n", cookie)
-	//})
 }

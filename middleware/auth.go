@@ -15,6 +15,7 @@ import (
 	gin_jwt "github.com/appleboy/gin-jwt/v2"
 	"github.com/gin-gonic/gin"
 	"log"
+	"net/http"
 	"time"
 )
 
@@ -25,7 +26,7 @@ type login struct {
 	Password string `form:"password" json:"password" binding:"required"`
 }
 
-var identityKey = "id"
+var IdentityKey = "id"
 
 // User demo
 type User struct {
@@ -34,16 +35,7 @@ type User struct {
 	LastName  string
 }
 
-func HelloHandler(c *gin.Context) {
-	claims := gin_jwt.ExtractClaims(c)
-	user, _ := c.Get(identityKey)
-	c.JSON(200, gin.H{
-		"userID":   claims[identityKey],
-		"userName": user.(*User).UserName,
-		"text":     "Hello World.",
-	})
-}
-
+// 认证中间件初始化
 func init() {
 	var err error
 	Auth_JWT, err = gin_jwt.New(&gin_jwt.GinJWTMiddleware{
@@ -52,27 +44,9 @@ func init() {
 		// Key 服务端密钥
 		Key: []byte("secret key"),
 		// Timeout token 过期时间
-		Timeout: time.Hour,
-		// MaxRefresh token 更新时间
-		MaxRefresh: time.Hour,
-		// IdentityKey 身份密钥
-		IdentityKey: identityKey,
-		// PayloadFunc 添加额外业务相关的信息
-		PayloadFunc: func(data interface{}) gin_jwt.MapClaims {
-			if v, ok := data.(*User); ok {
-				return gin_jwt.MapClaims{
-					identityKey: v.UserName,
-				}
-			}
-			return gin_jwt.MapClaims{}
-		},
-		// IdentityHandler 身份处理程序
-		IdentityHandler: func(c *gin.Context) interface{} {
-			claims := gin_jwt.ExtractClaims(c)
-			return &User{
-				UserName: claims[identityKey].(string),
-			}
-		},
+		Timeout: time.Minute * 50,
+		// MaxRefresh token 更新时间  token有效期 = Timeout + MaxRefresh
+		MaxRefresh: time.Minute * 10,
 		// Authenticator 在登录接口中使用的验证方法，并返回验证成功后的用户对象。
 		Authenticator: func(c *gin.Context) (interface{}, error) {
 			var loginVals login
@@ -100,6 +74,16 @@ func init() {
 
 			return false
 		},
+		// PayloadFunc 添加额外业务相关的信息
+		PayloadFunc: func(data interface{}) gin_jwt.MapClaims {
+			if v, ok := data.(*User); ok {
+				return gin_jwt.MapClaims{
+					IdentityKey: v.UserName,
+					"k":         "v",
+				}
+			}
+			return gin_jwt.MapClaims{}
+		},
 		// Unauthorized 验证失败后设置错误信息
 		Unauthorized: func(c *gin.Context, code int, message string) {
 			c.JSON(code, gin.H{
@@ -107,6 +91,35 @@ func init() {
 				"message": message,
 			})
 		},
+		// Login登录响应函数
+		LoginResponse: func(c *gin.Context, code int, token string, expire time.Time) {
+			c.JSON(http.StatusOK, gin.H{
+				"code":    http.StatusOK,
+				"message": "login oj8k",
+				"token":   token,
+				"expire":  expire.Format(time.RFC3339),
+			})
+		},
+		// Refresh Token响应函数
+		RefreshResponse: func(c *gin.Context, code int, token string, expire time.Time) {
+			c.JSON(http.StatusOK, gin.H{
+				"code":    http.StatusOK,
+				"message": "refresh token oj8k",
+				"token":   token,
+				"expire":  expire.Format(time.RFC3339),
+			})
+		},
+		// IdentityHandler 身份处理程序
+		IdentityHandler: func(c *gin.Context) interface{} {
+			claims := gin_jwt.ExtractClaims(c)
+			return &User{
+				UserName:  claims[IdentityKey].(string),
+				LastName:  "IdentityHandler 身份处理程序",
+				FirstName: "业务相关" + claims["k"].(string),
+			}
+		},
+		// IdentityKey 身份密钥
+		IdentityKey: IdentityKey,
 		// TokenLookup is a string in the form of "<source>:<name>" that is used
 		// to extract token from the request.
 		// Optional. Default value "header:Authorization".
@@ -127,48 +140,12 @@ func init() {
 		// TimeFunc provides the current time. You can override it to use another time value. This is useful for testing or if your server uses a different time zone than your tokens.
 		// TimeFunc 设置时间函数
 		TimeFunc: time.Now,
+
+		// return the token as a cookie
+		// 将token作为cookie返回 便于开发测试
+		SendCookie: true,
 	})
 	if err != nil {
 		log.Fatalf("JWT Error: %v", err)
-	}
-}
-
-// 认证中间件
-func AuthMiddleware() gin.HandlerFunc {
-	return func(c *gin.Context) {
-
-		//token, err := request.ParseFromRequest(c.Request, request.AuthorizationHeaderExtractor,
-		//	func(t *jwt.Token) (i interface{}, e error) {
-		//		return []byte("SecretKey"), nil
-		//	})
-
-		//fmt.Println("auth:", token, err)
-
-		//a := &jwt.GinJWTMiddleware{
-		//	Realm:         "gin jwt",
-		//	Key:           []byte("secret key"),
-		//	Timeout:       time.Hour,
-		//	MaxRefresh:    time.Hour,
-		//	PayloadFunc:   func(data interface{}) jwt.MapClaims {},
-		//	Authenticator: func(c *gin.Context) (interface{}, error) {},
-		//	Authorizator:  func(data interface{}, c *gin.Context) bool {},
-		//	Unauthorized:  func(c *gin.Context, code int, message string) {},
-		//	TokenLookup:   "header: Authorization, query: token, cookie: jwt",
-		//	// TokenLookup: "query:token",
-		//	// TokenLookup: "cookie:token",
-		//	TokenHeadName: "Bearer",
-		//	TimeFunc:      time.Now,
-		//}
-
-		//if err == nil {
-		//	if token.Valid {
-		//		c.Next()
-		//	} else {
-		//		c.String(http.StatusUnauthorized, "Token is not valid")
-		//	}
-		//} else {
-		//	c.String(http.StatusUnauthorized, "Unauthorized access to this resource")
-		//}
-
 	}
 }

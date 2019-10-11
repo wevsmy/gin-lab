@@ -12,7 +12,10 @@
 package controllers
 
 import (
+	"gin-lab/middleware"
+	gin_jwt "github.com/appleboy/gin-jwt/v2"
 	"github.com/gin-gonic/gin"
+	"time"
 )
 
 // @首页
@@ -124,34 +127,48 @@ func Options(c *gin.Context) {
 	})
 }
 
-func RefreshToken(c *gin.Context) {
-	c.JSON(200, gin.H{
-		"message": "RefreshToken",
-	})
-}
-
+// @method test
+// @Description post data
+// @Accept  json
+// @Produce json
+// @Success 200 {string} string "login 方法"
+// @Router /login [post]
 func Login(c *gin.Context) {
-	//token := jwt.New(jwt.SigningMethodHS256)
-	//claims := make(jwt.MapClaims)
-	//claims["exp"] = time.Now().Add(time.Hour * time.Duration(1)).Unix()
-	//claims["iat"] = time.Now().Unix()
-	//token.Claims = claims
-	//
-	//tokenString, err := token.SignedString([]byte("SecretKey"))
-
-	//c.Request.WithContext()
-	//c.Header("Authorization", tokenString)
-	//
-	//fmt.Println(tokenString, err)
-
-	c.JSON(200, gin.H{
-		"token": "tokenString",
-	})
+	middleware.Auth_JWT.LoginHandler(c)
 }
 
+// @method test
+// @Description get data
+// @Accept  json
+// @Produce json
+// @Success 200 {string} string "logout 方法"
+// @Router /logout [get]
 func Logout(c *gin.Context) {
+	c.SetCookie(
+		middleware.Auth_JWT.CookieName,
+		"",
+		int(middleware.Auth_JWT.TimeFunc().Add(middleware.Auth_JWT.Timeout).Unix()-time.Now().Unix()),
+		"/",
+		middleware.Auth_JWT.CookieDomain,
+		middleware.Auth_JWT.SecureCookie,
+		middleware.Auth_JWT.CookieHTTPOnly,
+	)
+	c.JSON(200, gin.H{"code": "200", "message": "logout oj8k"})
+}
+
+func RefreshToken(c *gin.Context) {
+	middleware.Auth_JWT.RefreshHandler(c)
+}
+
+func Hello(c *gin.Context) {
+	claims := gin_jwt.ExtractClaims(c)
+	user, _ := c.Get(middleware.IdentityKey)
 	c.JSON(200, gin.H{
-		"message": "Logout",
+		"userID":    claims[middleware.IdentityKey],
+		"userName":  user.(*middleware.User).UserName,
+		"firstName": user.(*middleware.User).FirstName,
+		"lastName":  user.(*middleware.User).LastName,
+		"text":      "Hello World.",
 	})
 }
 
