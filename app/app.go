@@ -14,13 +14,18 @@ package app
 import (
 	_ "gin-lab/app/models"
 	"gin-lab/app/routers"
-	"gin-lab/app/utils"
 	"github.com/gin-gonic/gin"
 )
 
-// app 应用初始化
-func Init() {
+// 全局结构体变量
+var App struct {
+	Config *config
+}
+
+// app 应用
+func Run() {
+	App.Config.Init()
 	r := gin.New()
 	routers.Router(r)
-	_ = r.Run(":" + utils.Config.Port)
+	_ = r.Run(":" + App.Config.Port)
 }

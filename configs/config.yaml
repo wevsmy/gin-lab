@@ -1,2 +1,9 @@
-host: "localhost"
+host: localhost
 port: "8080"
+mysql:
+  host: ""
+  port: 0
+  user: ""
+  password: ""
+  db_name: ""
+  parameters: ""

@@ -13,6 +13,7 @@ package utils
 
 import (
 	"fmt"
+	"gin-lab/app"
 	"gin-lab/app/docs"
 )
 
@@ -21,10 +22,10 @@ func init() {
 	docs.SwaggerInfo.Title = "Swagger Gin-Lab API"
 	docs.SwaggerInfo.Description = "This is a sample server gin-lab server."
 	docs.SwaggerInfo.Version = "1.0"
-	if Config.Port == "80" {
-		docs.SwaggerInfo.Host = fmt.Sprintf("%s", Config.Host)
+	if app.App.Config.Port == "80" {
+		docs.SwaggerInfo.Host = fmt.Sprintf("%s", app.App.Config.Host)
 	} else {
-		docs.SwaggerInfo.Host = fmt.Sprintf("%s:%s", Config.Host, Config.Port)
+		docs.SwaggerInfo.Host = fmt.Sprintf("%s:%s", app.App.Config.Host, app.App.Config.Port)
 	}
 	docs.SwaggerInfo.BasePath = "/v1"
 	docs.SwaggerInfo.Schemes = []string{"http", "https"}
