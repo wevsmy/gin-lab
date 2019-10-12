@@ -9,7 +9,7 @@
 @Time: 2019/10/08 下午6:13
 */
 
-package routers
+package router
 
 import (
 	"gin-lab/app/controllers"
@@ -90,10 +90,10 @@ func authRouter(r *gin.Engine) {
 // 静态文件路由入口
 func staticRouter(r *gin.Engine) {
 	// 静态资源文件夹
-	r.Static("/statics", "statics")
+	r.Static("/static", "static")
 
 	// 静态文件图标
-	r.StaticFile("/favicon.ico", "./app/statics/favicon.ico")
+	r.StaticFile("/favicon.ico", "./app/static/favicon.ico")
 }
 
 // 测试路由入口

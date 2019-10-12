@@ -13,7 +13,7 @@ package app
 
 import (
 	_ "gin-lab/app/models"
-	"gin-lab/app/routers"
+	"gin-lab/app/router"
 	"github.com/gin-gonic/gin"
 )
 
@@ -26,6 +26,6 @@ var App struct {
 func Run() {
 	App.Config.Init()
 	r := gin.New()
-	routers.Router(r)
+	router.Router(r)
 	_ = r.Run(":" + App.Config.Port)
 }

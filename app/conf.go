@@ -52,7 +52,7 @@ func (c *config) Init() {
 	c.Port = "8080"
 
 	// 配置文件读写
-	filePath := "./configs/config.yaml"
+	filePath := "./config/config.yaml"
 	if err := c.writeConfig(filePath); err != nil {
 		log.Fatalf("%s write err: %v", filePath, err)
 	}
