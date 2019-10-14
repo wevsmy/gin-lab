@@ -16,7 +16,8 @@ import (
 	"io/ioutil"
 	"log"
 	"os"
-	"path"
+	"os/user"
+	"path/filepath"
 )
 
 // app 应用程序配置文件入口
@@ -43,16 +44,15 @@ type mysql struct {
 
 // config init 默认接口业务逻辑实现
 func (c *config) Init() {
-	//u, e := user.Current()
-	//fmt.Println("ss:", u, u.HomeDir, e)
-
 	// 默认配置信息
 	c = new(config)
 	c.Host = "localhost"
 	c.Port = "8080"
 
 	// 配置文件读写
-	filePath := "./config/config.yaml"
+	u, _ := user.Current()
+	filePath := filepath.Join(u.HomeDir, ".GinLabConfig", "config.yaml")
+	//filePath := "./config/config.yaml"
 	if err := c.writeConfig(filePath); err != nil {
 		log.Fatalf("%s write err: %v", filePath, err)
 	}
@@ -92,7 +92,7 @@ func (c *config) writeConfig(filePath string) (err error) {
 	f, err := os.OpenFile(filePath, os.O_RDWR, os.ModePerm)
 	defer func() { _ = f.Close() }()
 	if err != nil && os.IsNotExist(err) {
-		fileDir, _ := path.Split(filePath)
+		fileDir, _ := filepath.Split(filePath)
 		err = os.MkdirAll(fileDir, os.ModePerm)
 		if err != nil {
 			return err
