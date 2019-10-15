@@ -9,16 +9,20 @@
 @Time: 2019/10/12 上午11:18
 */
 
-package app
+package config
 
 import (
 	"gopkg.in/yaml.v2"
 	"io/ioutil"
 	"log"
 	"os"
-	"os/user"
 	"path/filepath"
 )
+
+type Config struct {
+	C  config
+	Pa configInterface
+}
 
 // app 应用程序配置文件入口
 type config struct {
@@ -42,22 +46,20 @@ type mysql struct {
 	Parameters string `yaml:"parameters"`
 }
 
-// config init 默认接口业务逻辑实现
-func (c *config) Init() {
+// config 默认初始化实现
+func New(filePath string) (c *config, e error) {
 	// 默认配置信息
-	c = new(config)
+	c = &config{}
 	c.Host = "localhost"
 	c.Port = "8080"
 
 	// 配置文件读写
-	u, _ := user.Current()
-	filePath := filepath.Join(u.HomeDir, ".GinLabConfig", "config.yaml")
 	//filePath := "./config/config.yaml"
 	if err := c.writeConfig(filePath); err != nil {
-		log.Fatalf("%s write err: %v", filePath, err)
+		return c, err
 	}
 	if err := c.readConfig(filePath); err != nil {
-		log.Fatalf("%s read err: %v", filePath, err)
+		return c, err
 	}
 	// 配置项目运行在herokuApp上的Port
 	herokuAppPort := os.Getenv("PORT")
@@ -65,8 +67,9 @@ func (c *config) Init() {
 		log.Printf("herokuAppPort %s", herokuAppPort)
 		c.Port = herokuAppPort
 	}
-	// 赋值全局Config变量
-	App.Config = c
+	// 配置swagger
+	c.swaggerInfoInit()
+	return c, e
 }
 
 // 读取配置文件

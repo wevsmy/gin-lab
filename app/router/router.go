@@ -13,7 +13,9 @@ package router
 
 import (
 	"gin-lab/app/controllers"
+	_ "gin-lab/app/docs"
 	"gin-lab/app/middleware"
+	_ "gin-lab/app/utils"
 	gin_jwt "github.com/appleboy/gin-jwt/v2"
 	"github.com/gin-gonic/gin"
 	swaggerFiles "github.com/swaggo/files"
@@ -26,9 +28,9 @@ import (
 func Router(r *gin.Engine) {
 	// 全局中间件
 	r.Use(
-		gin.Logger(),                // 日志记录
-		gin.Recovery(),              // 有panic时, 进行500的错误处理
-		middleware.TestMiddleware(), // 自定义测试中间件
+		gin.Logger(),   // 日志记录
+		gin.Recovery(), // 有panic时, 进行500的错误处理
+		//middleware.TestMiddleware(), // 自定义测试中间件
 	)
 	// 首页
 	r.GET("/", controllers.Index)
@@ -45,6 +47,7 @@ func Router(r *gin.Engine) {
 // v1 API路由入口
 func v1ApiRouter(r *gin.Engine) {
 	// use ginSwagger middleware to serve the API docs
+	//r.GET("/swagger/*any", ginSwagger.WrapHandler(swaggerFiles.Handler))
 	r.GET("/swagger/*any", ginSwagger.WrapHandler(swaggerFiles.Handler))
 	// 路由组
 	v1 := r.Group("v1")

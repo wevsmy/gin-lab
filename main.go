@@ -9,6 +9,5 @@ import (
 // @contact.url https://blog.weii.ink
 // @contact.email wevsmy@gmail.com
 func main() {
-	//app.Run()
-	app.TestAliPay()
+	app.Run()
 }
