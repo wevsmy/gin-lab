@@ -47,8 +47,9 @@ func Router(r *gin.Engine) {
 // v1 API路由入口
 func v1ApiRouter(r *gin.Engine) {
 	// use ginSwagger middleware to serve the API docs
-	//r.GET("/swagger/*any", ginSwagger.WrapHandler(swaggerFiles.Handler))
 	r.GET("/swagger/*any", ginSwagger.WrapHandler(swaggerFiles.Handler))
+	// websocket
+	r.GET("/ws", controllers.HandleConnections)
 	// 路由组
 	v1 := r.Group("v1")
 	{

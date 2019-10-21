@@ -8,6 +8,7 @@ require (
 	github.com/gin-gonic/gin v1.4.0
 	github.com/go-openapi/jsonreference v0.19.3 // indirect
 	github.com/go-openapi/spec v0.19.3 // indirect
+	github.com/gorilla/websocket v1.4.1
 	github.com/heroku/x v0.0.0-20171004170240-705849e307dd
 	github.com/jinzhu/gorm v1.9.11
 	github.com/mailru/easyjson v0.7.0 // indirect
