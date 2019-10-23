@@ -57,11 +57,16 @@ func v1ApiRouter(r *gin.Engine) {
 	{
 		// 单文件上传
 		upload.POST("/single", controllers.UploadSingle)
-		upload.StaticFile("/single", "./app/static/single.html")
+		upload.StaticFile("/single", "./app/templates/single.html")
 		// 多文件上传
 		upload.POST("/multiple", controllers.UploadMultiple)
-		upload.StaticFile("/multiple", "./app/static/multiple.html")
+		upload.StaticFile("/multiple", "./app/templates/multiple.html")
 	}
+	// 聊天室 chatRoom
+	r.GET("/room/:roomid", controllers.RoomGET)
+	r.POST("/room/:roomid", controllers.RoomPOST)
+	r.DELETE("/room/:roomid", controllers.RoomDELETE)
+	r.GET("/stream/:roomid", controllers.RoomStream)
 
 	// 路由组
 	v1 := r.Group("/v1")

@@ -4,7 +4,7 @@
 //@Contact: wevsmy@gmail.com
 //@Site: blog.weii.ink
 //@Software: GoLand
-//@File: websocket.go
+//@File: webSocket.go
 //@Time: 2019/10/21 下午2:41
 
 package controllers
