@@ -1,9 +1,0 @@
-host: "gin-lab.herokuapp.com"
-port: "80"
-mysql:
-  host: ""
-  port: 0
-  user: ""
-  password: ""
-  db_name: ""
-  parameters: ""
