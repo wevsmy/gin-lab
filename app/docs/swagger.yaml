@@ -1,0 +1,245 @@
+definitions:
+  controllers.Account:
+    properties:
+      id:
+        example: 1
+        format: int64
+        type: integer
+      name:
+        example: account name
+        type: string
+    type: object
+  controllers.AddAccount:
+    properties:
+      name:
+        example: account name
+        type: string
+    type: object
+info:
+  contact:
+    email: wevsmy@gmail.com
+    name: API Support
+    url: https://blog.weii.ink
+  license: {}
+paths:
+  /hello/:
+    get:
+      consumes:
+      - application/json
+      description: get data
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: hello world
+          schema:
+            type: string
+  /login:
+    post:
+      consumes:
+      - application/json
+      description: post data
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: login 方法
+          schema:
+            type: string
+      summary: login
+  /logout:
+    get:
+      consumes:
+      - application/json
+      description: get data
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: logout 方法
+          schema:
+            type: string
+      summary: logout
+  /method:
+    get:
+      consumes:
+      - application/json
+      description: get ID
+      parameters:
+      - description: name search by q
+        format: email
+        in: query
+        name: q
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: get list
+          schema:
+            type: string
+        "404":
+          description: not found
+          schema:
+            type: string
+      summary: get test
+      tags:
+      - method
+    head:
+      consumes:
+      - application/json
+      description: head data
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: head 方法
+          schema:
+            type: string
+      summary: head test
+      tags:
+      - method
+    options:
+      consumes:
+      - application/json
+      description: options data
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: options 方法
+          schema:
+            type: string
+      summary: options test
+      tags:
+      - method
+    post:
+      consumes:
+      - application/json
+      description: post data
+      parameters:
+      - description: Add account
+        in: body
+        name: account
+        required: true
+        schema:
+          $ref: '#/definitions/AddAccount'
+          type: object
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/controllers.AddAccount'
+        "404":
+          description: not found
+          schema:
+            type: string
+      summary: post test
+      tags:
+      - method
+    put:
+      consumes:
+      - application/json
+      description: put data
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: put 方法
+          schema:
+            type: string
+      summary: put test
+      tags:
+      - method
+  /method/{id}:
+    delete:
+      consumes:
+      - application/json
+      description: Delete by account ID
+      parameters:
+      - description: Account ID
+        format: int64
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "204":
+          description: No Content
+          schema:
+            $ref: '#/definitions/controllers.Account'
+      summary: delete test
+      tags:
+      - method
+    get:
+      consumes:
+      - application/json
+      description: get string by ID
+      parameters:
+      - description: ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: get 方法
+          schema:
+            type: string
+        "404":
+          description: not found
+          schema:
+            type: string
+      summary: get test
+      tags:
+      - method
+    patch:
+      consumes:
+      - application/json
+      description: Update a account
+      parameters:
+      - description: Account ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      - description: Update account
+        in: body
+        name: account
+        required: true
+        schema:
+          $ref: '#/definitions/UpdateAccount'
+          type: object
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/controllers.Account'
+        "404":
+          description: not found
+          schema:
+            type: string
+      summary: put test
+      tags:
+      - method
+  /ping:
+    get:
+      consumes:
+      - application/json
+      description: get data
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: v1 pong
+          schema:
+            type: string
+swagger: "2.0"

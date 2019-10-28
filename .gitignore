@@ -1,4 +1,8 @@
 .env
 .docker_build/
+.idea/
 bin/
 vendor/
+*.db
+*.syso
+*.exe
