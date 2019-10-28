@@ -51,3 +51,8 @@ For more information about using Go on Heroku, see these Dev Center articles:
 ```bash
 swag i -o ./app/docs
 ```
+
+## goversioninfo
+```bash
+goversioninfo -64
+``` 
