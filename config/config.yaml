@@ -1,5 +1,5 @@
-host: localhost
-port: "8080"
+host: "gin-lab.herokuapp.com"
+port: "80"
 mysql:
   host: ""
   port: 0
