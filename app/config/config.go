@@ -61,10 +61,15 @@ func New(filePath string) (c *config, e error) {
 	if err := c.readConfig(filePath); err != nil {
 		return c, err
 	}
-	// 配置项目运行在herokuApp上的Port
+	// 配置项目运行在herokuApp上的HOST,PORT
+	herokuAppHost := os.Getenv("HOST")
+	if herokuAppHost != "" {
+		log.Printf("herokuAppHost:%s", herokuAppHost)
+		c.Host = herokuAppHost
+	}
 	herokuAppPort := os.Getenv("PORT")
 	if herokuAppPort != "" {
-		log.Printf("herokuAppPort %s", herokuAppPort)
+		log.Printf("herokuAppPort:%s", herokuAppPort)
 		c.Port = herokuAppPort
 	}
 	// 配置swagger
