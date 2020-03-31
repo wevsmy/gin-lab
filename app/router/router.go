@@ -16,7 +16,7 @@ import (
 	_ "gin-lab/app/docs"
 	"gin-lab/app/middleware"
 	_ "gin-lab/app/utils"
-	gin_jwt "github.com/appleboy/gin-jwt/v2"
+	ginJwt "github.com/appleboy/gin-jwt/v2"
 	"github.com/gin-gonic/gin"
 	swaggerFiles "github.com/swaggo/files"
 	"github.com/swaggo/gin-swagger"
@@ -95,7 +95,7 @@ func authRouter(r *gin.Engine) {
 	r.GET("/logout", controllers.Logout)
 
 	r.NoRoute(middleware.Auth_JWT.MiddlewareFunc(), func(c *gin.Context) {
-		claims := gin_jwt.ExtractClaims(c)
+		claims := ginJwt.ExtractClaims(c)
 		log.Printf("NoRoute claims: %#v\n", claims)
 		c.JSON(404, gin.H{"code": "404", "message": "Page not found"})
 	})

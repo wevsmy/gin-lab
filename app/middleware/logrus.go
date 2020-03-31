@@ -17,7 +17,7 @@ import (
 	"time"
 )
 
-// logrus日志记录中间件
+// log's日志记录中间件
 func LogMiddleware() gin.HandlerFunc {
 	return func(c *gin.Context) {
 

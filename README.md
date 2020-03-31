@@ -51,8 +51,15 @@ For more information about using Go on Heroku, see these Dev Center articles:
 ```bash
 swag i -o ./app/docs
 ```
+[swag](http://localhost:8080/swagger/index.html)
 
 ## goversioninfo
 ```bash
 goversioninfo -64
 ``` 
+
+生成 data.pb.go 文件
+## grpc
+```bash
+protoc -I . --go_out=plugins=grpc:. ./app/protos/data.proto
+```
