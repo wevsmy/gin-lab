@@ -28,8 +28,9 @@ import (
 func Router(r *gin.Engine) {
 	// 全局中间件
 	r.Use(
-		gin.Logger(),   // 日志记录
-		gin.Recovery(), // 有panic时, 进行500的错误处理
+		gin.Logger(),           // 日志记录
+		gin.Recovery(),         // 有panic时, 进行500的错误处理
+		middleware.Heartbeat(), // 自定义测试中间件
 		//middleware.TestMiddleware(), // 自定义测试中间件
 	)
 	// Set a lower memory limit for multipart forms (default is 32 MiB)
